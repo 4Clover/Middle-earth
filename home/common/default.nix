@@ -3,6 +3,8 @@
 {
   imports = [
     ../programs/opencode.nix
+    ../programs/git.nix
+    ../programs/zsh.nix
   ];
 
   home.stateVersion = "25.05";

@@ -47,26 +47,31 @@
       #   - Common baseline across all hosts (commonModules)
       #   - Host-specific customization (./hosts/${hostName})
       #   - Easy addition of new modules at either level
-      commonModules = [
-        # NixOS-WSL base module
-        nixos-wsl.nixosModules.default
+       commonModules = [
+         # NixOS-WSL base module
+         nixos-wsl.nixosModules.default
 
-        # sops-nix for secrets
-        sops-nix.nixosModules.sops
+         # sops-nix for secrets
+         sops-nix.nixosModules.sops
 
-        # Home Manager as NixOS module
-        home-manager.nixosModules.home-manager
-        {
-          # CRITICAL: Use global pkgs to prevent duplicate nixpkgs evaluation
-          home-manager.useGlobalPkgs = true;
-          # Install packages to /etc/profiles instead of ~/.nix-profile
-          home-manager.useUserPackages = true;
-          # Pass inputs to home-manager modules
-          home-manager.extraSpecialArgs = { inherit inputs; };
-          # Import sops-nix home-manager module for user-level secrets
-          home-manager.sharedModules = [ sops-nix.homeManagerModules.sops ];
-        }
-      ];
+         # Nixpkgs configuration for unfree packages (NVIDIA drivers, etc.)
+         {
+           nixpkgs.config.allowUnfree = true;
+         }
+
+         # Home Manager as NixOS module
+         home-manager.nixosModules.home-manager
+         {
+           # CRITICAL: Use global pkgs to prevent duplicate nixpkgs evaluation
+           home-manager.useGlobalPkgs = true;
+           # Install packages to /etc/profiles instead of ~/.nix-profile
+           home-manager.useUserPackages = true;
+           # Pass inputs to home-manager modules
+           home-manager.extraSpecialArgs = { inherit inputs; };
+           # Import sops-nix home-manager module for user-level secrets
+           home-manager.sharedModules = [ sops-nix.homeManagerModules.sops ];
+         }
+       ];
 
       # Helper function to create NixOS configurations
       mkHost = hostName: nixpkgs.lib.nixosSystem {
