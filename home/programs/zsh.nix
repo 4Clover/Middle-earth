@@ -35,7 +35,7 @@
     };
 
     # Additional initialization for key bindings
-    initExtra = ''
+    initContent = ''
       # Bind keys for history substring search
       bindkey '^[[A' history-substring-search-up
       bindkey '^[[B' history-substring-search-down
