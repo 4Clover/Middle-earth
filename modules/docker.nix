@@ -12,5 +12,9 @@
 
   # NVIDIA container toolkit for GPU support
   # Provides CDI (Container Device Interface) for GPU access in containers
-  hardware.nvidia-container-toolkit.enable = true;
+  # suppressNvidiaDriverAssertion = true because WSL2 provides drivers via wsl.useWindowsDriver
+  hardware.nvidia-container-toolkit = {
+    enable = true;
+    suppressNvidiaDriverAssertion = true;
+  };
 }

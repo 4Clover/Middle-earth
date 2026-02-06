@@ -4,6 +4,8 @@
 {
   imports = [
     ../../modules/wsl.nix
+    ../../modules/nix-settings.nix
+    ../../modules/docker.nix
   ];
 
   # WSL Configuration
@@ -14,6 +16,9 @@
   # Networking
   networking.hostName = "aragorn";
 
+  # Shell configuration
+  programs.zsh.enable = true;  # NixOS-level for login shell
+
   # System version
   system.stateVersion = "25.05";
 
@@ -22,6 +27,7 @@
     isNormalUser = true;
     description = "Clovr";
     extraGroups = [ "wheel" "docker" "networkmanager" ];
+    shell = pkgs.zsh;
     # Password is managed separately or via initialPassword for first boot
     # initialPassword = "changeme";  # Uncomment for first boot, then change
   };
