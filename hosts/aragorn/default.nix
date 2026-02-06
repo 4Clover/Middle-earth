@@ -1,12 +1,28 @@
 # Host configuration for aragorn (desktop)
-# Stub - will be fully implemented in later tasks
 { config, pkgs, inputs, ... }:
 
 {
-  # Required for NixOS-WSL
+  imports = [
+    ../../modules/wsl.nix
+  ];
+
+  # WSL Configuration
   wsl.enable = true;
   wsl.defaultUser = "clovr";
+  wsl.useWindowsDriver = true;  # GPU passthrough for AI workloads
 
-  # Required state version
+  # Networking
+  networking.hostName = "aragorn";
+
+  # System version
   system.stateVersion = "25.05";
+
+  # sops-nix configuration
+  sops.defaultSopsFile = ../../secrets/example.yaml;
+  sops.age.keyFile = "/home/clovr/.config/sops/age/keys.txt";
+
+  # Home Manager configuration for user
+  home-manager.users.clovr = {
+    imports = [ ../../home/common ];
+  };
 }

@@ -1,0 +1,10 @@
+{
+  "name": "Cyberdream",
+  "type": "dark",
+  "colors": {
+    "background": "#16181a",
+    "foreground": "#ffffff",
+    "primary": "#5ef1ff",
+    "secondary": "#bd5eff"
+  }
+}

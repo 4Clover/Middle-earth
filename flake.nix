@@ -46,6 +46,8 @@
           home-manager.useUserPackages = true;
           # Pass inputs to home-manager modules
           home-manager.extraSpecialArgs = { inherit inputs; };
+          # Import sops-nix home-manager module for user-level secrets
+          home-manager.sharedModules = [ sops-nix.homeManagerModules.sops ];
         }
       ];
 
