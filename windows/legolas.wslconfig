@@ -1,0 +1,17 @@
+[wsl2]
+memory=8GB
+processors=6
+swap=4GB
+localhostForwarding=true
+nestedVirtualization=true
+guiApplications=true
+
+# Note: After RAM upgrade to 48GB, adjust memory to 24GB and swap to 12GB
+
+[experimental]
+autoMemoryReclaim=gradual
+sparseVhd=true
+networkingMode=mirrored
+dnsTunneling=true
+firewall=true
+autoProxy=true
