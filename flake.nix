@@ -29,7 +29,24 @@
       system = "x86_64-linux";
       pkgs = nixpkgs.legacyPackages.${system};
 
-      # Common modules shared by all hosts
+      # Module import chain documentation:
+      # commonModules contains the shared foundation for all NixOS hosts:
+      #   1. nixos-wsl.nixosModules.default - WSL-specific base configuration
+      #   2. sops-nix.nixosModules.sops - Secrets management at system level
+      #   3. home-manager.nixosModules.home-manager - User environment management
+      #      with sops-nix integration for user-level secrets
+      #
+      # Host-specific modules are imported via mkHost helper:
+      #   - Each host imports ./hosts/${hostName} which contains:
+      #     * modules/wsl.nix - WSL-specific overrides (e.g., boot, networking)
+      #     * modules/docker.nix - Container runtime configuration
+      #     * modules/nix-settings.nix - Nix daemon and build settings
+      #     * Any other host-specific configuration
+      #
+      # This two-level structure ensures:
+      #   - Common baseline across all hosts (commonModules)
+      #   - Host-specific customization (./hosts/${hostName})
+      #   - Easy addition of new modules at either level
       commonModules = [
         # NixOS-WSL base module
         nixos-wsl.nixosModules.default
