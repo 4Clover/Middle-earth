@@ -32,10 +32,14 @@ We use the community-maintained NixOS-WSL distribution.
         wsl --import NixOS $env:USERPROFILE\NixOS nixos.wsl --version 2
         ```
     *   Alternatively, if you downloaded the `.wsl` installer (WSL >= 2.4.4), just double-click it.
-3.  **Launch NixOS**:
+3.  **Launch NixOS AS ROOT** (important for first boot!):
     ```powershell
-    wsl -d NixOS
+    wsl -d NixOS -u root
     ```
+    
+    > **IMPORTANT**: The fresh NixOS-WSL comes with a default user `nixos`. Our configuration 
+    > creates user `clovr` instead. You MUST boot as root first, apply the configuration, 
+    > and THEN you can login as `clovr`. If you see `getpwnam(nixos) failed`, boot as root.
 
 ### Step 2: Generate Age Key (CRITICAL)
 
@@ -104,6 +108,22 @@ When you make changes to your configuration:
 5.  Add the host's public key to `.sops.yaml`.
 
 ## Troubleshooting
+
+### "getpwnam(nixos) failed" or "getpwnam(clovr) failed"
+This error occurs when WSL can't find the default user. **This is expected on first boot** before applying our configuration.
+
+**Solution:**
+1.  Boot as root instead:
+    ```powershell
+    wsl -d NixOS -u root
+    ```
+2.  Clone the repo and apply the configuration (see Bootstrap steps above)
+3.  After `nixos-rebuild switch` completes, you can login normally:
+    ```powershell
+    wsl -d NixOS
+    ```
+
+**Why this happens:** Fresh NixOS-WSL uses user `nixos`, but our config creates user `clovr`. You must apply the config first.
 
 ### Filesystem Performance
 **NEVER** work on projects located in `/mnt/c/`. The performance overhead of the 9P protocol between WSL and Windows is significant. Always keep your repository and development files within the WSL ext4 filesystem (e.g., `~/projects`).
