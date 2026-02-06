@@ -1,0 +1,7 @@
+# sops-nix configuration
+# Age key location: /home/clovr/.config/sops/age/keys.txt (will be created during bootstrap)
+
+creation_rules:
+  - path_regex: secrets/.*\.yaml$
+    age: >-
+      # Add age public key here after running: age-keygen -o ~/.config/sops/age/keys.txt
